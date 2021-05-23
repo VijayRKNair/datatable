@@ -136,7 +136,7 @@ export class UserListingComponent implements OnInit,AfterViewInit {
       this.selectedFilterValues.push(filterCol);
     }else{
       let spliceIndex = this.selectedFilterValues.findIndex(mapper =>  mapper === filterCol)
-      this.selectedFilterValues.splice(spliceIndex)
+      this.selectedFilterValues.splice(spliceIndex,1)
     }
     this.userListDataSource.filter = JSON.stringify(this.selectedFilterValues);
     }
