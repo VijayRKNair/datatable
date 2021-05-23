@@ -3,7 +3,7 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
 {
-  path: '',
+  path: 'userListing',
   loadChildren: () => import('./modules/user-listing/user-listing.module').then(m => m.UserListingModule),
   data: {
     title: ''
