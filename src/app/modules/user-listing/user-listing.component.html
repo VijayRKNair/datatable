@@ -1,0 +1,28 @@
+<div class="container-flex">
+    <table mat-table [dataSource]="userListDataSource" matSort class="mat-elevation-z8">
+        <ng-container  *ngFor="let disCol of columns; let colIndex = index" [matColumnDef]="disCol.columnDef">
+            <th (contextmenu)="onContextMenu($event,disCol.columnDef)" mat-header-cell *matHeaderCellDef mat-sort-header>{{disCol.header}} </th>
+            <td mat-cell *matCellDef="let row">
+                <div *ngIf="disCol.columnDef === 'thumbnail';else other_columns">
+                    <img class="profile-pic" src="{{row.thumbnail}}"/> 
+                </div>
+                <ng-template #other_columns>
+                    {{disCol.cell(row)}}
+                </ng-template>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+<div class="filter-menu"  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+            <div class="filter" (click) = "$event.stopPropagation()">
+                <mat-checkbox #checkbox *ngFor="let filterCol of filterComponentArray; let filterIndex = index" [checked]="filterCol.isChecked"  (change)="applyFilter(checkbox,filterCol.value)"   class="example-margin">{{filterCol.value}}</mat-checkbox>
+            </div>
+   </ng-template>
+</mat-menu>
