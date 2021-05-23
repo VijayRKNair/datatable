@@ -47,20 +47,22 @@ export class UserListingComponent implements OnInit,AfterViewInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private userListingService: UserListingService, private notificationBar: MatSnackBar) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userListingService.getUersList().subscribe((userList) => {
+      let userDataList : UserDetails[] =  userList.body['results'].map(mapper => {
+          return this.formatUserTableData(mapper)
+        })
+        this.userListDataSource = new MatTableDataSource(userDataList);
+        this.userListDataSource.sort = this.sort;
+        this.userListDataSource.paginator = this.paginator;
+        this.userListDataSource.filterPredicate = this.customFilterPredicate();
+      },(err) => {
+        this.handleError(err);
+      })
+  }
 
   ngAfterViewInit() {
-    this.userListingService.getUersList().subscribe((userList) => {
-    let userDataList : UserDetails[] =  userList.body['results'].map(mapper => {
-        return this.formatUserTableData(mapper)
-      })
-      this.userListDataSource = new MatTableDataSource(userDataList);
-      this.userListDataSource.sort = this.sort;
-      this.userListDataSource.paginator = this.paginator;
-      this.userListDataSource.filterPredicate = this.customFilterPredicate();
-    },(err) => {
-      this.handleError(err);
-    })
+
    }
 
    handleError(err){
